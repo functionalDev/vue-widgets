@@ -17,12 +17,30 @@
      * @param {NotificationEvent} event
      */
     backgroundSync (event) {
-      if(event.tag === 'myFirstSync'){
+      if(event.tag === 'backgroundSync'){
        event.waitUntil(
         console.log('Sync successful');
        ); 
       }
     },
+    register () {
+      new Promise(function(resolve, reject) {
+        Notification.requestPermission(function(result) {
+          if (result !== 'granted') return reject(Error("Denied notification permission"));
+          resolve();
+        })
+      }).then(function() {
+        return navigator.serviceWorker.ready;
+      }).then(function(reg) {
+        return reg.sync.register('syncTest');
+      }).then(function() {
+        log('Sync registered');
+      }).catch(function(err) {
+        log('It broke');
+        log(err.message);
+      });
+    });
+    }
     /**
      * Handle notification push event.
      *
