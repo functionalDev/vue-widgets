@@ -6,8 +6,23 @@
       self.addEventListener('push', this.notificationPush.bind(this))
       self.addEventListener('notificationclick', this.notificationClick.bind(this))
       self.addEventListener('notificationclose', this.notificationClose.bind(this))
+      self.addEventListener('sync', this.backgroundSync.bind(this))
     },
-
+    /**
+     * Handle sync event.
+     *
+     * https://developer.mozilla.org/en-US/docs/Web/API/SyncEvent
+     * https://developers.google.com/web/updates/2015/12/background-sync
+     *
+     * @param {NotificationEvent} event
+     */
+    backgroundSync (event) {
+      if(event.tag === 'myFirstSync'){
+       event.waitUntil(
+        console.log('Sync successful');
+       ); 
+      }
+    },
     /**
      * Handle notification push event.
      *
