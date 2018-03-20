@@ -21,9 +21,9 @@
       }
 
       // https://developer.mozilla.org/en-US/docs/Web/API/PushMessageData
-      if (event.data) {
+      if (event.data && event.data.json() && event.data.json().notification) {
         event.waitUntil(
-          this.sendNotification(event.data.json())
+          this.sendNotification(event.data.json().notification)
         )
       }
     },
@@ -38,11 +38,20 @@
     notificationClick (event) {
       // console.log(event.notification)
 
-      if (event.action === 'some_action') {
-        // Do something...
-      } else {
-        self.clients.openWindow('/')
-      }
+      switch (event.action) {
+        case "open":
+          self.clients.openWindow('/')
+          break;
+        case "setting":
+          self.clients.openWindow('/#/settings')
+          //
+          break;
+        case "blaa":
+          //
+          break;
+        default:
+          break;
+      } 
     },
 
     /**
