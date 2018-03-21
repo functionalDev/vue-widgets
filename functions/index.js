@@ -16,7 +16,8 @@ exports.helloWorld = functions.database.ref('/notifications/{pushId}').onWrite((
     `New entry: ${projectData.title}`:
     'Entry updated';
 
-  return loadUsers().then(users => {
+  return loadUsers();
+}).then(users => {
     const tokens = users.map( user => user.pushToken);
     console.log('data', projectData);
     const payload = {
@@ -29,11 +30,10 @@ exports.helloWorld = functions.database.ref('/notifications/{pushId}').onWrite((
         vibrate: [500, 100, 0],
       }
     };
-    return subscription = loadSubscriptions().then( subscription => {    // eslint-disable-line promise/no-nesting
+    return loadSubscriptions();
+  }).then( subscription => {    // eslint-disable-line promise/no-nesting
       webpush.setGCMAPIKey('AAAAQKfgxnA:APA91bGrSOcLHXVJOC_UVPUInWqu1X5PQ5_8cRDwo9F2pEmwCvMdHS8gqwHD4L18aVu15igs7zdahvh4nzQg5VumjTLmyzvS-LwkJdhBNKVLsqRRf2NIy5Cv4yhryB8DwTeOjcUHNr92');
       return webpush.sendNotification(subscription, JSON.stringify(payload));
-    });
-  });
 });
 
 function loadUsers() {
